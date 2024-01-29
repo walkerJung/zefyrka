@@ -736,7 +736,6 @@ class RawEditorState extends EditorState
 
   // Cursors
   CursorController? _cursorController;
-  FloatingCursorController? _floatingCursorController;
 
   // Keyboard
   late keyboard.KeyboardListener _keyboardListener;
