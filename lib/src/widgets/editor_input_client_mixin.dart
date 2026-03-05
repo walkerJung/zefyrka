@@ -100,8 +100,15 @@ mixin RawEditorStateTextInputClientMixin on EditorState
     // with the last known remote value.
     // It is important to prevent excessive remote updates as it can cause
     // race conditions.
+    // If the text has changed (e.g., due to programmatic insertion like newline
+    // or image embed), reset composing to empty to avoid sending a stale
+    // composing range to the IME, which breaks CJK (e.g. Korean) input.
+    final textChanged =
+        value.text != _lastKnownRemoteTextEditingValue!.text;
     final actualValue = value.copyWith(
-      composing: _lastKnownRemoteTextEditingValue!.composing,
+      composing: textChanged
+          ? TextRange.empty
+          : _lastKnownRemoteTextEditingValue!.composing,
     );
 
     if (actualValue == _lastKnownRemoteTextEditingValue) return;
